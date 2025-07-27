@@ -1,0 +1,130 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row">
+  <div class="col-8 offset-2 mt-3">
+    <h3>Create a New Listing</h3>
+    <form
+      method="post"
+      action="/listings"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+      id="listingForm">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          required
+          type="text"
+          name="listing[title]"
+          placeholder="Add a catchy title"
+          class="form-control" />
+        <div class="valid-feedback">Title is good!</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          required
+          name="listing[description]"
+          class="form-control"></textarea>
+        <div class="invalid-feedback">Please enter a short description</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload Listing Image</label>
+        <input type="file" name="listing[image]" class="form-control" />
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-label">Price</label>
+          <input
+            required
+            name="listing[price]"
+            placeholder="1200"
+            class="form-control" />
+          <div class="invalid-feedback">Price should be valid</div>
+        </div>
+        <div class="mb-3 col-md-8">
+          <label for="country" class="form-label">Country</label>
+          <input
+            required
+            type="text"
+            name="listing[country]"
+            placeholder="India"
+            class="form-control" />
+          <div class="invalid-feedback">Country name should be valid</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input
+          required
+          type="text"
+          name="listing[location]"
+          id="locationInput"
+          placeholder="Durgapur, West Bengal"
+          class="form-control" />
+        <div class="invalid-feedback">Location should be valid</div>
+      </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select required name="listing[category]" class="form-select">
+          <option value="">Select a category</option>
+          <option value="Trending">Trending</option>
+          <option value="Rooms">Rooms</option>
+          <option value="Iconic Cities">Iconic Cities</option>
+          <option value="Mountains">Mountains</option>
+          <option value="Castles">Castles</option>
+          <option value="Amazing Pools">Amazing Pools</option>
+          <option value="Camping">Camping</option>
+          <option value="Farms">Farms</option>
+          <option value="Arctic">Arctic</option>
+          <option value="Play">Play</option>
+          <option value="Boats">Boats</option>
+        </select>
+        <div class="invalid-feedback">Please select a valid category</div>
+      </div>
+
+      <!-- Hidden input to store coordinates -->
+      <input type="hidden" name="listing[geometry][lat]" id="latInput" />
+      <input type="hidden" name="listing[geometry][lng]" id="lngInput" />
+
+      <button class="btn btn-dark add-btn mt-3" type="submit">Add</button>
+    </form>
+  </div>
+</div>
+
+<!-- Geocoding Script -->
+<script>
+  const form = document.getElementById("listingForm");
+  const locationInput = document.getElementById("locationInput");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault(); // Stop form submission
+
+    const location = locationInput.value;
+
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          location
+        )}`
+      );
+      const data = await response.json();
+
+      if (data && data.length > 0) {
+        const { lat, lon } = data[0];
+        document.getElementById("latInput").value = lat;
+        document.getElementById("lngInput").value = lon;
+        form.submit(); // now submit with coordinates
+      } else {
+        alert("Location not found. Please enter a valid address.");
+      }
+    } catch (error) {
+      alert("Geocoding failed. Try again.");
+      console.error(error);
+    }
+  });
+</script>

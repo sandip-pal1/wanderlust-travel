@@ -1,0 +1,369 @@
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  flex: 1;
+}
+
+/* Navbar */
+.navbar {
+  height: 5rem;
+  background-color: white;
+}
+.fa-compass {
+  color: #fe424d;
+  font-size: 2rem;
+}
+
+.nav-link {
+  color: #222222 !important;
+}
+
+/* Navbar Search Styling */
+/* .search-btn {
+  background-color: #fe424d !important;
+  color: #fff !important;
+  border-radius: 25px !important;
+  padding: 0 1rem !important;
+}
+
+.search-btn:hover {
+  background-color: #fe424d !important;
+  color: #fff !important;
+}
+
+.search-btn i {
+  display: inline !important;
+  margin-right: 0.5rem !important;
+}
+
+.search-inp {
+  border-radius: 25px !important;
+  padding: 0.5rem 3rem !important;
+  font-size: 0.9rem !important;
+} */
+
+/* Footer */
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
+}
+.f-info-links a:hover {
+  text-decoration: underline;
+}
+.f-info-links,
+.f-info-socials,
+.f-info-brand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.f-info-socials i {
+  font-size: 1.3rem;
+  margin-right: 1rem;
+}
+.f-info {
+  text-align: center;
+  height: 8rem;
+  background-color: #ebebeb;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+}
+
+/* Cards */
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
+}
+
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.card-text p {
+  font-weight: 400 !important;
+}
+
+.listing-link {
+  text-decoration: none;
+}
+
+/* Card effect */
+.card-img-overlay {
+  opacity: 0;
+}
+
+.card-img-overlay:hover {
+  opacity: 0.2;
+  background-color: white;
+}
+
+/* New Page*/
+.add-btn {
+  background-color: #fe424d !important;
+  border: none !important;
+}
+
+/* Edit Page */
+.edit-btn {
+  background-color: #fe424d !important;
+  border: none !important;
+}
+
+/* show page */
+.show-img {
+  height: 30vh;
+}
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.btns {
+  display: flex;
+}
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.review-form-container {
+  margin-left: 10rem; /* You can increase to 3rem or more if needed */
+  max-width: 600px; /* Optional: prevents it from stretching too wide */
+}
+
+/* index page  */
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter {
+  text-align: center;
+  margin-right: 2rem;
+  margin-top: 1rem;
+  opacity: 0.7;
+}
+
+.filter:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.filter p {
+  font-size: 0.8rem;
+}
+
+.tax-info {
+  display: none;
+}
+
+.tax-toggle {
+  border: 1px solid black;
+  border-radius: 1rem;
+  height: 3rem;
+  padding: 1rem;
+  margin-left: 4rem;
+  display: flex;
+  align-items: center;
+}
+
+/* General style for all filter links */
+#filters .filter {
+  color: #000;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  margin: 15px;
+  transition: color 0.3s ease;
+  opacity: 0.6;
+}
+
+#filters .filter i {
+  font-size: 18px; /* Optional: increase icon size */
+  margin-bottom: 5px;
+}
+
+/* Hover effect */
+#filters .filter:hover {
+  color: #333;
+  opacity: 1; /* Slightly darker black on hover */
+}
+
+#filters .filter:hover i {
+  color: #333;
+}
+
+#filters .filter p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+/* respons */
+#filters {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  flex-wrap: nowrap;
+}
+
+#filters .filter {
+  text-align: center;
+  min-width: 60px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#filters .filter:hover {
+  opacity: 1;
+}
+
+#filters .filter i {
+  font-size: 18px; /* Optional: increase icon size */
+  margin-bottom: 5px;
+}
+#filters .filter p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.tax-toggle {
+  width: 100%;
+  max-width: 300px; /* Limit box width */
+  min-width: 250px; /* ✅ Prevent box from shrinking too small */
+  padding: 10px 15px;
+  margin: 10px auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap; /* ✅ Prevent wrapping by default */
+  gap: 10px;
+  overflow: hidden; /* ✅ Prevent content overflow */
+}
+
+/* Keep the label readable and wrapping */
+.tax-toggle .form-check-label {
+  flex: 1;
+  font-size: 14px;
+  white-space: normal; /* ✅ Allow line wrapping */
+  word-break: break-word; /* ✅ Break long words */
+}
+
+/* Ensure the switch doesn’t break layout */
+.tax-toggle .form-check-input {
+  flex-shrink: 0;
+  width: 2.25em;
+  height: 1.15em;
+}
+
+/* Responsive tweaks */
+@media (max-width: 400px) {
+  .tax-toggle {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tax-toggle .form-check-input {
+    align-self: flex-end;
+  }
+}
+
+
+
+/* Search in Navbar */
+.search-btn{
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+
+}
+.search-btn:hover{
+    background-color: #fe424d;
+    color: #fff;
+}
+.search-btn i{
+    display: inline;
+    margin-right: 0.5rem;
+}
+.search-btn p{
+    display: inline;
+    /* margin-right: 0.5rem; */
+}
+.search-inp {
+    border-radius: 25px;
+    padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+    font-size: 1rem;
+    width: 18rem;
+}
+
+
+
+/* Mobile Expanded Collapse */
+@media (max-width: 1050px) {
+    .wanderlust {
+        display: none !important;
+    }
+}
+
+@media (max-width: 688px) {
+    .search-btn p {
+        display: none;
+    }
+    .search-inp {
+        width: 12rem;
+    }
+}
+
+@media (max-width: 466px) {
+    .search-inp {
+        width: 10rem;
+        margin-left: -1rem;
+        font-size: xx-small;
+    }
+}
+
+@media (max-width: 405px) {
+    .search-inp {
+        width: 8rem;
+        margin-left: -1rem;
+        font-size: xx-small;
+    }
+}
+
+
+
+
+/* Navbar Base Style */
+.navbar {
+  background-color: white;
+  padding: 0.75rem 1rem;
+  height: auto;
+  border-radius: 0;
+}
+
+/* Custom padding for show page card body */
+.custom-padding {
+  padding-left: 2rem !important;
+  padding-top: 0.8rem !important;
+  padding-bottom: 0.5rem !important;
+}

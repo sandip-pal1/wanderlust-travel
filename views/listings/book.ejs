@@ -1,0 +1,60 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Book Your Stay</h2>
+
+  <form action="/listings/<%= listingId %>/book" method="POST">
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input type="text" class="form-control" name="name" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Phone Number</label>
+      <input type="tel" class="form-control" name="phone" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Room Type</label>
+      <select class="form-select" name="roomType" required>
+        <option value="">Select Room Type</option>
+        <option value="Single">Single</option>
+        <option value="Double">Double</option>
+        <option value="Suite">Suite</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Check-In Date</label>
+      <input type="date" class="form-control" name="checkin" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Check-Out Date</label>
+      <input type="date" class="form-control" name="checkout" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Number of Guests</label>
+      <input type="number" class="form-control" name="guests" min="1" required />
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Confirm Booking</button>
+  </form>
+</div>
+
+<!-- 
+<script>
+  function redirectToShowPage() {
+    // Just redirect after form submission without saving
+    const listingId = "<%= listingId %>";
+    window.location.href = `/listings/${listingId}`;
+    return false; // Prevent actual POST request
+  }
+</script> -->
