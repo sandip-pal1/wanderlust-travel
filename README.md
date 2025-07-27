@@ -7,7 +7,6 @@
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 ![EJS](https://img.shields.io/badge/EJS-8C8C8C?style=for-the-badge&logo=javascript&logoColor=white)
-![Passport.js](https://img.shields.io/badge/Passport.js-34E27A?style=for-the-badge&logo=passport&logoColor=white)
 
 ---
 
