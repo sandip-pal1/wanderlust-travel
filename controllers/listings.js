@@ -28,39 +28,78 @@ module.exports.renderBookForm = (req, res) => {
   res.render("listings/book.ejs", { listingId: id });
 };
 
-module.exports.createListing = async (req, res) => {
-  let url = req.file.path;
-  let filename = req.file.filename;
+module.exports.createListing = async (req, res, next) => {
+  try {
+    console.log("=== CREATE LISTING START ===");
 
-  const { location } = req.body.listing;
+    // ✅ Check if user exists
+    if (!req.user) {
+      throw new Error("User not logged in. req.user is undefined.");
+    }
+    console.log("User:", req.user);
 
-  // Geocode using Nominatim
-  const geoResponse = await fetch(
-    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      location
-    )}`
-  );
-  const geoData = await geoResponse.json();
+    // ✅ Check uploaded file
+    if (!req.file || !req.file.path || !req.file.filename) {
+      throw new Error("File upload failed: req.file is missing or invalid.");
+    }
+    console.log("Uploaded file:", req.file);
 
-  if (!geoData || geoData.length === 0) {
-    req.flash("error", "Location not found on map.");
-    return res.redirect("/listings/new");
+    let url = req.file.path;
+    let filename = req.file.filename;
+
+    // ✅ Check location field
+    if (!req.body.listing || !req.body.listing.location) {
+      throw new Error("No location provided in the request body.");
+    }
+    const { location } = req.body.listing;
+    console.log("Location received:", location);
+
+    // ✅ Geocode request
+    console.log("Calling Nominatim API...");
+    const geoResponse = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`
+    );
+    console.log("GeoResponse status:", geoResponse.status);
+
+    if (!geoResponse.ok) {
+      throw new Error(`Nominatim API request failed: ${geoResponse.status}`);
+    }
+
+    const geoData = await geoResponse.json();
+    console.log("GeoData:", geoData);
+
+    if (!geoData || geoData.length === 0) {
+      req.flash("error", "Location not found on map.");
+      console.error("No geocoding results.");
+      return res.redirect("/listings/new");
+    }
+
+    const coordinates = [parseFloat(geoData[0].lon), parseFloat(geoData[0].lat)];
+    console.log("Coordinates:", coordinates);
+
+    // ✅ Create listing object
+    const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id;
+    newListing.image = { url, filename };
+    newListing.geometry = {
+      type: "Point",
+      coordinates: coordinates,
+    };
+
+    console.log("Saving listing to DB...");
+    await newListing.save();
+
+    req.flash("success", "New Listing Created!");
+    console.log("=== CREATE LISTING SUCCESS ===");
+    res.redirect("/listings");
+
+  } catch (err) {
+    console.error("=== CREATE LISTING ERROR ===");
+    console.error(err);
+    next(err); // Pass error to Express error handler (shows in Render logs)
   }
-
-  const coordinates = [parseFloat(geoData[0].lon), parseFloat(geoData[0].lat)];
-
-  const newListing = new Listing(req.body.listing);
-  newListing.owner = req.user._id;
-  newListing.image = { url, filename };
-  newListing.geometry = {
-    type: "Point",
-    coordinates: coordinates,
-  };
-
-  await newListing.save();
-  req.flash("success", "New Listing Created!");
-  res.redirect("/listings");
 };
+
 
 module.exports.showListing = async (req, res) => {
   const { id } = req.params;
