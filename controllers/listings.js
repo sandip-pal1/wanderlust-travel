@@ -123,49 +123,64 @@ module.exports.renderEditForm = async (req, res) => {
   });
 };
 
-module.exports.updateListing = async (req, res) => {
-  const { id } = req.params;
-  const updatedData = req.body.listing;
+module.exports.updateListing = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body.listing;
 
-  // Step 1: Geocode the updated location using Nominatim (OpenStreetMap)
-  const geoResponse = await fetch(
-    `https://nominatim.openstreetmap.org/search?format=json&q=${updatedData.location}`
-  );
-  const geoData = await geoResponse.json();
+    if (!updatedData.location) {
+      throw new Error("Location missing in update form.");
+    }
 
-  if (geoData.length === 0) {
-    req.flash("error", "Invalid location. Could not geocode.");
-    return res.redirect(`/listings/${id}/edit`);
+    // ✅ Nominatim with User-Agent including your email
+    const geoResponse = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(updatedData.location)}`,
+      {
+        headers: {
+          "User-Agent": "WanderlustApp/1.0 (palteam3@gmail.com)"
+        }
+      }
+    );
+
+    if (!geoResponse.ok) {
+      throw new Error(`Nominatim API request failed: ${geoResponse.status}`);
+    }
+
+    const geoData = await geoResponse.json();
+
+    if (geoData.length === 0) {
+      req.flash("error", "Invalid location. Could not geocode.");
+      return res.redirect(`/listings/${id}/edit`);
+    }
+
+    const listing = await Listing.findById(id);
+    listing.title = updatedData.title;
+    listing.description = updatedData.description;
+    listing.price = updatedData.price;
+    listing.country = updatedData.country;
+    listing.location = updatedData.location;
+    listing.category = updatedData.category;
+
+    listing.geometry = {
+      type: "Point",
+      coordinates: [parseFloat(geoData[0].lon), parseFloat(geoData[0].lat)],
+    };
+
+    if (req.file) {
+      listing.image = { url: req.file.path, filename: req.file.filename };
+    }
+
+    await listing.save();
+
+    req.flash("success", "Listing Updated!");
+    res.redirect(`/listings/${id}`);
+
+  } catch (err) {
+    console.error("UPDATE LISTING ERROR:", err);
+    next(err);
   }
-
-  // Step 2: Update listing with new data
-  const listing = await Listing.findById(id);
-  listing.title = updatedData.title;
-  listing.description = updatedData.description;
-  listing.price = updatedData.price;
-  listing.country = updatedData.country;
-  listing.location = updatedData.location;
-  listing.category = updatedData.category;
-
-  // Step 3: Update geometry (map coordinates)
-  listing.geometry = {
-    type: "Point",
-    coordinates: [parseFloat(geoData[0].lon), parseFloat(geoData[0].lat)],
-  };
-
-  // Step 4: If image uploaded, update it
-  if (typeof req.file !== "undefined") {
-    let url = req.file.path;
-    let filename = req.file.filename;
-    listing.image = { url, filename };
-  }
-
-  // Step 5: Save everything
-  await listing.save();
-
-  req.flash("success", "Listing Updated!");
-  res.redirect(`/listings/${id}`);
 };
+
 
 module.exports.destroyListing = async (req, res) => {
   const { id } = req.params;
