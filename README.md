@@ -59,7 +59,6 @@ Built with **Node.js, Express.js, MongoDB, EJS, and Passport.js** for authentica
 
 ![Property](screenshots/property.png)
 
-_(Add your screenshots in a `screenshots` folder in the repository and update paths above)_
 
 ---
 
